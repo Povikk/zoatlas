@@ -1,0 +1,126 @@
+/* Atlas Pop — une piste où la rareté devient une grande surface identifiable. */
+.recommended-direction {
+  margin-bottom: 130px !important;
+  padding: clamp(24px, 3vw, 48px);
+  border: 1px solid #5d765f;
+  border-radius: 28px;
+  background: radial-gradient(circle at 12% 0, #38553c66, transparent 32%), #0b1711;
+  box-shadow: 0 30px 90px #0008;
+}
+.recommended-direction > div:first-child > div:first-child {
+  border-color: #e6bd62;
+  background: #e6bd62;
+  color: #101711;
+}
+.recommended-direction > div:nth-child(2) {
+  grid-template-columns: repeat(5, minmax(340px, 1fr));
+  gap: 34px;
+}
+.recommended-direction button { min-width: 340px; }
+
+.concept-card-preview { width: min(500px, 84vw) !important; max-width: 500px !important; }
+.concept-card[data-design="atlas-pop"] { width: 340px !important; max-width: 340px !important; }
+.concept-card-preview[data-design="atlas-pop"] { width:min(500px,calc((100vh - 72px) * 5 / 7),86vw) !important; max-width:500px !important; }
+
+.species-card[data-design="atlas-pop"] {
+  --pop-surface: #d8d4ca;
+  --pop-ink: #101611;
+  --pop-deep: #575e59;
+  --pop-glow: #a9b0ac;
+}
+.species-card[data-design="atlas-pop"][data-rarity="uncommon"] { --pop-surface:#89cc9d; --pop-ink:#0a2012; --pop-deep:#1f7040; --pop-glow:#75e29b; }
+.species-card[data-design="atlas-pop"][data-rarity="rare"] { --pop-surface:#76c7e4; --pop-ink:#071b23; --pop-deep:#126487; --pop-glow:#5cdaff; }
+.species-card[data-design="atlas-pop"][data-rarity="epic"] { --pop-surface:#d68ce9; --pop-ink:#24102a; --pop-deep:#7d3191; --pop-glow:#ed7dff; }
+.species-card[data-design="atlas-pop"][data-rarity="mythic"] { --pop-surface:#f0b44f; --pop-ink:#241604; --pop-deep:#9b5709; --pop-glow:#ffc557; }
+
+.species-card[data-design="atlas-pop"] .card-face {
+  overflow: hidden;
+  border: 2px solid color-mix(in srgb, var(--pop-surface) 78%, white);
+  border-radius: 6.5%;
+  background: var(--pop-surface);
+  color: var(--pop-ink);
+  box-shadow: inset 0 0 0 3px #ffffff22, 0 0 17px color-mix(in srgb, var(--pop-glow) 32%, transparent), 0 22px 46px #0008;
+}
+.species-card[data-design="atlas-pop"][data-rarity="rare"] .card-face { box-shadow:inset 0 0 0 3px #ffffff2b,0 0 25px color-mix(in srgb,var(--pop-glow) 48%,transparent),0 22px 46px #0008; }
+.species-card[data-design="atlas-pop"][data-rarity="epic"] .card-face { box-shadow:inset 0 0 0 3px #ffffff38,0 0 34px color-mix(in srgb,var(--pop-glow) 62%,transparent),0 22px 48px #0009; }
+.species-card[data-design="atlas-pop"][data-rarity="mythic"] .card-face { border-color:#ffe4a4; box-shadow:inset 0 0 0 3px #fff3c544,0 0 42px color-mix(in srgb,var(--pop-glow) 72%,transparent),0 22px 50px #0009; }
+
+.species-card[data-design="atlas-pop"] .card-photo {
+  inset: 0 !important;
+  width: 100% !important;
+  height: 54% !important;
+  border: 0;
+  outline: 0;
+  border-radius: 0;
+  object-position: var(--image-position);
+  filter: saturate(1.04) contrast(1.03);
+}
+.species-card[data-design="atlas-pop"] .card-photo-shade { inset:0; width:100%; height:54%; background:linear-gradient(180deg,#07100a38 0,transparent 25%,transparent 72%,#07100a4a 100%); }
+.species-card[data-design="atlas-pop"] .rarity-banner {
+  top: 4%; left: 4%; right: auto;
+  padding: 8px 11px;
+  border: 1px solid #ffffffb8;
+  border-radius: 7px;
+  background: var(--pop-deep);
+  color: #fff;
+  font-size: clamp(10px, 3cqw, 14px);
+  letter-spacing: .08em;
+  box-shadow: 0 5px 16px #0007, 0 0 18px color-mix(in srgb, var(--pop-glow) 72%, transparent);
+}
+.species-card[data-design="atlas-pop"] .rarity-banner i { background:#fff; box-shadow:0 0 8px #fff; }
+.species-card[data-design="atlas-pop"] .card-topline { top:4%; left:auto; right:4%; color:#fff; }
+.species-card[data-design="atlas-pop"] .card-topline > span { padding:8px 10px; border-color:#ffffff88; background:#07100acc; color:#fff; }
+.species-card[data-design="atlas-pop"] .arcane-nameplate {
+  z-index: 7; top:57.5%; left:6.5%; right:6.5%; height:auto; min-height:0; padding:0;
+  border:0; outline:0; background:none; box-shadow:none;
+}
+.species-card[data-design="atlas-pop"] .arcane-nameplate h3 {
+  max-width:100%; color:var(--pop-ink);
+  font:900 clamp(21px,7.2cqw,32px)/.97 Arial,sans-serif;
+  letter-spacing:-.045em; text-transform:none; text-shadow:none;
+}
+.species-card[data-design="atlas-pop"] .arcane-nameplate span { display:none; }
+.species-card[data-design="atlas-pop"] .arcane-type-line {
+  top:70.5%; left:6.5%; right:6.5%; height:auto; min-height:0; padding:0 0 3%;
+  border:0; border-bottom:1px solid color-mix(in srgb,var(--pop-ink) 25%,transparent);
+  outline:0; background:none; color:color-mix(in srgb,var(--pop-ink) 82%,transparent);
+  box-shadow:none; font-size:clamp(11px,3.2cqw,14px); letter-spacing:.02em; text-transform:none;
+}
+.species-card[data-design="atlas-pop"] .arcane-type-line b { display:none; }
+.species-card[data-design="atlas-pop"] .card-panel {
+  left:6.5%; right:6.5%; bottom:4.5%; height:22%; min-height:0; padding:3% 0 0;
+  border:0; outline:0; background:none; color:var(--pop-ink); box-shadow:none;
+  backdrop-filter:none; justify-content:flex-start;
+}
+.species-card[data-design="atlas-pop"] .card-title em { margin:0; color:color-mix(in srgb,var(--pop-ink) 72%,transparent); font-size:clamp(12px,3.8cqw,16px); font-weight:700; }
+.species-card[data-design="atlas-pop"] .card-chips { margin-top:5%; gap:5px; }
+.species-card[data-design="atlas-pop"] .card-chips span { max-width:42%; padding:5px 7px; border:1px solid color-mix(in srgb,var(--pop-ink) 24%,transparent); background:#ffffff2e; color:var(--pop-ink); font-size:clamp(9px,2.7cqw,12px); }
+.species-card[data-design="atlas-pop"] .arcane-field-note { display:none; }
+.species-card[data-design="atlas-pop"] .card-footer { margin-top:auto; padding-top:3%; border-top:1px solid color-mix(in srgb,var(--pop-ink) 20%,transparent); color:var(--pop-ink); font-size:clamp(9px,2.6cqw,11px); }
+.species-card[data-design="atlas-pop"] .card-footer .conservation,
+.species-card[data-design="atlas-pop"] .card-footer .brand { color:color-mix(in srgb,var(--pop-ink) 82%,transparent); }
+.species-card[data-design="atlas-pop"] .card-footer .conservation { color:var(--pop-ink); font-weight:800; }
+.species-card[data-design="atlas-pop"] .card-footer .brand { display:none !important; }
+.species-card[data-design="atlas-pop"] .card-footer .conservation b { background:var(--pop-deep); color:#fff; }
+.species-card[data-design="atlas-pop"] .card-material { z-index:8; inset:0; opacity:0; mix-blend-mode:screen; }
+.species-card[data-design="atlas-pop"][data-rarity="epic"] .card-material,
+.species-card[data-design="atlas-pop"][data-rarity="mythic"] .card-material {
+  opacity:calc(.1 + var(--glare-opacity)*.34);
+  background:linear-gradient(112deg,transparent 12%,#75eaff33 29%,#ff82dc44 42%,#fff19f4a 55%,transparent 72%);
+  background-size:220% 100%;
+  animation:atlas-pop-shine 4.8s ease-in-out infinite;
+}
+.species-card[data-design="atlas-pop"][data-rarity="mythic"] .card-edge { box-shadow:inset 0 0 0 2px #fff1b86b,inset 0 0 38px #f5a81b2b; }
+@keyframes atlas-pop-shine { 0%,100%{background-position:130% 0} 50%{background-position:-60% 0} }
+
+@media (max-width: 760px) {
+  .recommended-direction { margin-inline:-3px; padding:20px 10px; border-radius:20px; }
+  .recommended-direction > div:nth-child(2) { grid-template-columns:repeat(5,300px); }
+  .recommended-direction button { min-width:300px; }
+  .concept-card[data-design="atlas-pop"] { width:300px !important; max-width:300px !important; }
+  .concept-card-preview { width:min(410px,88vw) !important; max-width:410px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .species-card[data-design="atlas-pop"] .card-material { animation:none !important; }
+}

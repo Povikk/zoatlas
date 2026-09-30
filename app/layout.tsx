@@ -6,6 +6,7 @@ import "./card-effects-polish.css";
 import "./card-tcg-size.css";
 import "./card-arcane-style.css";
 import "./card-concepts.css";
+import "./atlas-pop.css";
 
 export const metadata: Metadata = {
   title: "ZOATLAS — Collectionnez le monde vivant",

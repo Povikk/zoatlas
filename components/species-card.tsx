@@ -7,7 +7,7 @@ import styles from "./species-card.module.css";
 export type CardRarity = "common" | "uncommon" | "rare" | "epic" | "mythic";
 export type CardVariant = "foil" | "gold" | "holographic" | "first-edition" | "founder-edition" | "expedition-edition" | "event-edition" | "serialized";
 export type CardSize = "small" | "medium" | "large";
-export type CardDesign = "heritage" | "full-art" | "field-journal" | "specimen" | "art-deco" | "topographic" | "museum" | "expedition" | "prism" | "totem";
+export type CardDesign = "atlas-pop" | "heritage" | "full-art" | "field-journal" | "specimen" | "art-deco" | "topographic" | "museum" | "expedition" | "prism" | "totem";
 
 export type SpeciesCardProps = {
   imageUrl: string;
