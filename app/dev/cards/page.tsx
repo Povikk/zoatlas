@@ -1,39 +1,43 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { CardGrid } from "@/components/card-grid";
-import { SpeciesCard, type CardRarity, type CardVariant, type SpeciesCardProps } from "@/components/species-card";
+import { SpeciesCard, type CardDesign, type CardRarity } from "@/components/species-card";
 import styles from "./cards-lab.module.css";
 
-const animals: Record<string, Omit<SpeciesCardProps,"rarity">> = {
-  tiger:{imageUrl:"https://images.unsplash.com/photo-1561731216-c3a4d99437d5?auto=format&fit=crop&w=1200&q=88",commonName:"Tigre du Bengale",scientificName:"Panthera tigris",family:"Felidae",region:"Asie",biome:"Forêt tropicale",conservationCode:"EN",conservationStatus:"En danger",focalPoint:{x:50,y:42}},
-  bear:{imageUrl:"https://images.unsplash.com/photo-1589656966895-2f33e7653819?auto=format&fit=crop&w=1200&q=88",commonName:"Ours polaire",scientificName:"Ursus maritimus",family:"Ursidae",region:"Arctique",biome:"Banquise",conservationCode:"VU",conservationStatus:"Vulnérable",focalPoint:{x:52,y:42}},
-  whale:{imageUrl:"https://www.wwf-junior.de/fileadmin/user_upload/Tiere/1440_WW1322825_Blauwal__c__Eric_Baccega__natureplcom__WWF.jpg",commonName:"Baleine bleue",scientificName:"Balaenoptera musculus",family:"Balaenopteridae",region:"Océans",biome:"Pélagique",conservationCode:"EN",conservationStatus:"En danger",focalPoint:{x:52,y:45},imageFit:"contain"},
-  axolotl:{imageUrl:"https://images.unsplash.com/photo-1594768816441-1dd241ffaa67?auto=format&fit=crop&w=1200&q=88",commonName:"Axolotl",scientificName:"Ambystoma mexicanum",family:"Ambystomatidae",region:"Mexique",biome:"Eau douce",conservationCode:"CR",conservationStatus:"En danger critique",focalPoint:{x:48,y:45}},
-  shark:{imageUrl:"https://images.unsplash.com/photo-1560275619-4662e36fa65c?auto=format&fit=crop&w=1200&q=88",commonName:"Grand requin blanc",scientificName:"Carcharodon carcharias",family:"Lamnidae",region:"Océans",biome:"Littoral",conservationCode:"VU",conservationStatus:"Vulnérable",focalPoint:{x:50,y:46},imageFit:"contain"},
-  owl:{imageUrl:"https://images.unsplash.com/photo-1579514500682-81cf0e5045e7?auto=format&fit=crop&w=1200&q=88",commonName:"Harfang des neiges",scientificName:"Bubo scandiacus",family:"Strigidae",region:"Arctique",biome:"Toundra",conservationCode:"VU",conservationStatus:"Vulnérable",focalPoint:{x:50,y:40},imageFit:"contain"},
-  frog:{imageUrl:"https://images.unsplash.com/photo-1559253664-ca249d4608c6?auto=format&fit=crop&w=1200&q=88",commonName:"Grenouille dendrobate à tapirer",scientificName:"Dendrobates tinctorius",family:"Dendrobatidae",region:"Guyane",biome:"Forêt tropicale",conservationCode:"LC",conservationStatus:"Préoccupation mineure",focalPoint:{x:50,y:46}},
-  butterfly:{imageUrl:"https://images.unsplash.com/photo-1553507891-1d184d2b09bc?auto=format&fit=crop&w=1200&q=88",commonName:"Papillon monarque",scientificName:"Danaus plexippus",family:"Nymphalidae",region:"Amérique",biome:"Prairie",conservationCode:"EN",conservationStatus:"En danger",focalPoint:{x:47,y:43}},
-  octopus:{imageUrl:"https://images.unsplash.com/photo-1545671913-b89ac1b4ac10?auto=format&fit=crop&w=1200&q=88",commonName:"Pieuvre commune",scientificName:"Octopus vulgaris",family:"Octopodidae",region:"Méditerranée",biome:"Récif rocheux",conservationCode:"LC",conservationStatus:"Préoccupation mineure",focalPoint:{x:52,y:48}},
-  leopard:{imageUrl:"https://images.unsplash.com/photo-1602491453631-e2a5ad90a131?auto=format&fit=crop&w=1200&q=88",commonName:"Panthère des neiges",scientificName:"Panthera uncia",family:"Felidae",region:"Asie",biome:"Haute montagne",conservationCode:"VU",conservationStatus:"Vulnérable",focalPoint:{x:50,y:38}},
+const tiger = {
+  imageUrl:"https://images.unsplash.com/photo-1561731216-c3a4d99437d5?auto=format&fit=crop&w=1400&q=90",
+  commonName:"Tigre du Bengale", scientificName:"Panthera tigris", family:"Felidae", region:"Asie",
+  biome:"Forêt tropicale", conservationCode:"EN", conservationStatus:"En danger", focalPoint:{x:50,y:42},
 };
 
 const rarities:CardRarity[]=["common","uncommon","rare","epic","mythic"];
-const variants:Array<{name:string;rarity:CardRarity;variants:CardVariant[];serial?:[number,number];expedition?:string}>=[
-  {name:"Standard",rarity:"common",variants:[]},{name:"Foil",rarity:"rare",variants:["foil"]},{name:"Gold",rarity:"epic",variants:["gold"]},{name:"Holographique",rarity:"epic",variants:["holographic"]},
-  {name:"First Edition",rarity:"rare",variants:["first-edition"]},{name:"Founder Edition",rarity:"mythic",variants:["founder-edition"]},{name:"Expedition",rarity:"epic",variants:["expedition-edition"],expedition:"BENGAL EXPEDITION"},{name:"Sérialisée",rarity:"epic",variants:["serialized"],serial:[184,2500]},{name:"Unique 1/1",rarity:"mythic",variants:["gold","holographic","serialized"],serial:[1,1]},
+const rarityNames:Record<CardRarity,string>={common:"Commune",uncommon:"Peu commune",rare:"Rare",epic:"Épique",mythic:"Mythique"};
+const concepts:Array<{id:CardDesign;number:string;name:string;mood:string;description:string}>=[
+  {id:"heritage",number:"01",name:"Héritage",mood:"Classique · noble",description:"Un cadre fantasy traditionnel, dense et rassurant, pensé comme un objet ancien."},
+  {id:"full-art",number:"02",name:"Plein Art",mood:"Immersif · spectaculaire",description:"L’animal occupe presque toute la carte, les informations flottent sur l’image."},
+  {id:"field-journal",number:"03",name:"Carnet de terrain",mood:"Artisanal · naturaliste",description:"Papier, annotation et photo rapportée d’expédition donnent un aspect collection réelle."},
+  {id:"specimen",number:"04",name:"Spécimen",mood:"Scientifique · précis",description:"Une plaque de laboratoire transparente, quadrillée et très documentaire."},
+  {id:"art-deco",number:"05",name:"Art déco",mood:"Géométrique · premium",description:"Des angles francs, une symétrie forte et une présence très collection de luxe."},
+  {id:"topographic",number:"06",name:"Topographique",mood:"Exploration · contemporain",description:"Courbes de niveau, fenêtre panoramique et repères cartographiques structurent la carte."},
+  {id:"museum",number:"07",name:"Musée",mood:"Minimal · classe",description:"Une composition sobre, noire et ivoire, inspirée des cartels d’exposition."},
+  {id:"expedition",number:"08",name:"Expédition",mood:"Brut · aventure",description:"Cadre renforcé, marquages techniques et tampon de mission pour une carte vécue."},
+  {id:"prism",number:"09",name:"Prisme",mood:"Futuriste · effet wow",description:"Verre sombre, reflets spectraux et angles lumineux pour maximiser l’effet rare."},
+  {id:"totem",number:"10",name:"Totem organique",mood:"Original · vivant",description:"Un cadre asymétrique aux formes naturelles, presque sculpté autour de l’animal."},
 ];
-const animalKeys=Object.keys(animals);
-const hundredCards=Array.from({length:100},(_,index)=>{const base=animals[animalKeys[index%animalKeys.length]];const rarity=rarities[index%rarities.length];const cardVariants:CardVariant[]=[];if(index%4===0)cardVariants.push("foil");if(index%7===0)cardVariants.push("gold");if(index%9===0)cardVariants.push("holographic");if(index%6===0)cardVariants.push("first-edition");if(index%13===0)cardVariants.push("serialized");return {base,rarity,variants:cardVariants,number:index+1};});
+type Selection={design:CardDesign;rarity:CardRarity;name:string}|null;
 
 export default function CardsLab(){
-  return <main className={styles.lab} style={{overflowX:"hidden"}}>
-    <header className={styles.hero}><div><p>ZOATLAS · SYSTÈME DE CARTES</p><h1>Modern Atlas</h1><span>Un composant, toutes les espèces, toutes les matières.</span></div><Link href="/">Retour à ZOATLAS</Link></header>
-    <section><div className={styles.sectionHead}><div><p>01 · RARETÉS</p><h2>Une structure, cinq niveaux de finition</h2></div><span>Survolez les cartes pour tester la lumière.</span></div><CardGrid>{rarities.map((rarity,i)=><div className={styles.sample} style={{minWidth:0}} key={rarity}><SpeciesCard {...animals.tiger} rarity={rarity} variants={i===4?["first-edition"]:[]} serialNumber={i===4?184:undefined} serialTotal={i===4?2500:undefined} interactive/><b>{rarity}</b></div>)}</CardGrid></section>
-    <section><div className={styles.sectionHead}><div><p>02 · MATÉRIAUX INTERACTIFS</p><h2>La matière réagit, la photo reste prioritaire</h2></div><span>Tilt, reflet, profondeur et ombre suivent le curseur.</span></div><CardGrid>{variants.map((v,i)=>{const animal=[animals.bear,animals.axolotl,animals.shark,animals.owl,animals.frog,animals.butterfly,animals.leopard,animals.tiger,animals.octopus][i];return <div className={styles.sample} style={{minWidth:0}} key={v.name}><SpeciesCard {...animal} rarity={v.rarity} variants={v.variants} serialNumber={v.serial?.[0]} serialTotal={v.serial?.[1]} expedition={v.expedition} interactive/><b>{v.name}</b></div>})}</CardGrid></section>
-    <section><div className={styles.sectionHead}><div><p>03 · FIELD GUIDE</p><h2>Recto collection, verso zoologique</h2></div><span>Cliquez sur chaque carte pour la retourner.</span></div><div className={styles.featureRow}><SpeciesCard {...animals.whale} rarity="mythic" variants={["foil","serialized"]} serialNumber={12} serialTotal={500} size="large" flippable taxonomy={[{label:"Classe",value:"Mammalia"},{label:"Ordre",value:"Artiodactyla"},{label:"Famille",value:"Balaenopteridae"},{label:"Genre",value:"Balaenoptera"}]} imageCredit={{author:"Eric Baccega",license:"WWF",source:"naturepl.com"}}/><SpeciesCard {...animals.leopard} rarity="epic" variants={["first-edition","expedition-edition"]} expedition="HIMALAYA EXPEDITION" size="large" flippable isNew taxonomy={[{label:"Classe",value:"Mammalia"},{label:"Ordre",value:"Carnivora"},{label:"Famille",value:"Felidae"},{label:"Genre",value:"Panthera"}]} imageCredit={{author:"Frida Bredesen",license:"Unsplash License",source:"Unsplash"}}/></div></section>
-    <section><div className={styles.sectionHead}><div><p>04 · RÉSILIENCE</p><h2>Cas difficiles et données incomplètes</h2></div><span>Longs noms, sujet clair, données absentes, fallback.</span></div><CardGrid><SpeciesCard {...animals.frog} rarity="rare" size="small"/><SpeciesCard {...animals.owl} rarity="common" size="small"/><SpeciesCard imageUrl="/image-volontairement-absente.jpg" commonName="Southern long-nosed armadillo" scientificName="Dasypus hybridus" family="Dasypodidae" rarity="uncommon" size="small"/><SpeciesCard {...animals.octopus} region={null} biome={null} conservationStatus={null} conservationCode={null} rarity="mythic" variants={["holographic"]} size="small"/></CardGrid></section>
-    <section><div className={styles.sectionHead}><div><p>05 · COLLECTION ÉTENDUE</p><h2>100 cartes supplémentaires</h2></div><span>Une grille dense pour éprouver la variété, le cadrage et les performances.</span></div><CardGrid>{hundredCards.map(card=><SpeciesCard key={card.number} {...card.base} commonName={`${card.base.commonName} · ${String(card.number).padStart(3,"0")}`} rarity={card.rarity} variants={card.variants} serialNumber={card.variants.includes("serialized")?card.number:undefined} serialTotal={card.variants.includes("serialized")?100:undefined} size="small" interactive={false}/>)}</CardGrid></section>
-    <footer className={styles.footer}>ZOATLAS · Modern Atlas Card System · Mouvement réduit respecté automatiquement</footer>
-  </main>
+  const [selected,setSelected]=useState<Selection>(null);
+  const card=(design:CardDesign,rarity:CardRarity,preview=false)=><SpeciesCard {...tiger} rarity={rarity} designStyle={design} variants={rarity==="mythic"?["holographic","serialized"]:rarity==="epic"?["foil"]:[]} serialNumber={rarity==="mythic"?1:undefined} serialTotal={rarity==="mythic"?250:undefined} size="large" className={preview?"concept-card-preview":"concept-card"} interactive={preview}/>;
+  return <main className={styles.lab}>
+    <header className={styles.hero}><div><p>ZOATLAS · ÉTUDE DE DIRECTION</p><h1>10 pistes. Une identité à choisir.</h1><span>Chaque piste présente les cinq raretés. Cliquez sur une carte pour l’inspecter en grand.</span></div><Link href="/">Retour à ZOATLAS</Link></header>
+    <nav className={styles.jump} aria-label="Accès rapide aux concepts">{concepts.map(c=><a key={c.id} href={`#${c.id}`}><b>{c.number}</b>{c.name}</a>)}</nav>
+    {concepts.map(concept=><section className={styles.concept} id={concept.id} key={concept.id}>
+      <div className={styles.conceptHead}><div className={styles.index}>{concept.number}</div><div><p>{concept.mood}</p><h2>{concept.name}</h2><span>{concept.description}</span></div></div>
+      <div className={styles.rail}>{rarities.map(rarity=><button className={styles.cardButton} key={rarity} onClick={()=>setSelected({design:concept.id,rarity,name:concept.name})} aria-label={`Inspecter ${concept.name}, rareté ${rarityNames[rarity]}`}>{card(concept.id,rarity)}<span><i/>{rarityNames[rarity]}</span></button>)}</div>
+    </section>)}
+    {selected&&<div className={styles.modal} role="dialog" aria-modal="true" aria-label={`Aperçu ${selected.name}`} onClick={()=>setSelected(null)}><button className={styles.close} onClick={()=>setSelected(null)} aria-label="Fermer">×</button><div className={styles.modalInner} onClick={event=>event.stopPropagation()}><div className={styles.previewCopy}><p>APERÇU GRAND FORMAT</p><h2>{selected.name}</h2><span>{rarityNames[selected.rarity]}</span><small>Survolez la carte pour tester la lumière. Cliquez en dehors pour fermer.</small></div>{card(selected.design,selected.rarity,true)}</div></div>}
+    <footer className={styles.footer}>ZOATLAS · Choisissez un numéro ou un nom de piste pour la prochaine itération.</footer>
+  </main>;
 }

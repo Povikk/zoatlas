@@ -7,6 +7,7 @@ import styles from "./species-card.module.css";
 export type CardRarity = "common" | "uncommon" | "rare" | "epic" | "mythic";
 export type CardVariant = "foil" | "gold" | "holographic" | "first-edition" | "founder-edition" | "expedition-edition" | "event-edition" | "serialized";
 export type CardSize = "small" | "medium" | "large";
+export type CardDesign = "heritage" | "full-art" | "field-journal" | "specimen" | "art-deco" | "topographic" | "museum" | "expedition" | "prism" | "totem";
 
 export type SpeciesCardProps = {
   imageUrl: string;
@@ -36,6 +37,7 @@ export type SpeciesCardProps = {
   imageCredit?: { author?: string; license?: string; source?: string };
   onActivate?: () => void;
   className?: string;
+  designStyle?: CardDesign;
 };
 
 const rarityLabel: Record<CardRarity, string> = { common:"COMMUNE", uncommon:"PEU COMMUNE", rare:"RARE", epic:"ÉPIQUE", mythic:"MYTHIQUE" };
@@ -47,7 +49,7 @@ export function SpeciesCard(props: SpeciesCardProps) {
   const { imageUrl, commonName, scientificName, family, region, biome, conservationStatus, conservationCode, taxonomy,
     rarity, variants=[], edition="ZOATLAS · Première édition", serialNumber, serialTotal, imagePosition, imageFit="cover", focalPoint,
     isOwned=true, isNew=false, interactive=true, flippable=false, defaultFlipped=false, size="medium", expedition,
-    imageCredit, onActivate, className="" } = props;
+    imageCredit, onActivate, className="", designStyle="heritage" } = props;
   const root = useRef<HTMLElement>(null);
   const raf = useRef<number | null>(null);
   const [loaded,setLoaded]=useState(false);
@@ -66,7 +68,7 @@ export function SpeciesCard(props: SpeciesCardProps) {
   const key=(event:KeyboardEvent<HTMLElement>)=>{if((event.key==="Enter"||event.key===" ")&&(flippable||onActivate)){event.preventDefault();activate()}};
   const style={"--image-position":focal,containerType:"inline-size"} as CSSProperties;
 
-  return <article ref={root} className={classes} style={style} data-size={size} data-rarity={rarity} data-variants={variants.join(" ")} data-interactive={interactive?"true":"false"} onPointerMove={move} onPointerLeave={resetTilt} onPointerCancel={resetTilt}
+  return <article ref={root} className={classes} style={style} data-size={size} data-rarity={rarity} data-design={designStyle} data-variants={variants.join(" ")} data-interactive={interactive?"true":"false"} onPointerMove={move} onPointerLeave={resetTilt} onPointerCancel={resetTilt}
     onClick={activate} onKeyDown={key} role={flippable||onActivate?"button":undefined} tabIndex={flippable||onActivate?0:undefined}
     aria-label={`${commonName}, carte ${rarityLabel[rarity]}${flippable?", retourner la carte":""}`} aria-pressed={flippable?flipped:undefined}>
     <div className={styles.tilt}>
