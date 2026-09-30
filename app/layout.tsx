@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./card-effects.css";
+import "./card-effects-fixes.css";
+import "./card-effects-polish.css";
 
 export const metadata: Metadata = {
   title: "ZOATLAS — Collectionnez le monde vivant",

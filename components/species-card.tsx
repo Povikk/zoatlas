@@ -24,6 +24,7 @@ export type SpeciesCardProps = {
   serialNumber?: number;
   serialTotal?: number;
   imagePosition?: string;
+  imageFit?: "cover" | "contain";
   focalPoint?: { x: number; y: number };
   isOwned?: boolean;
   isNew?: boolean;
@@ -44,7 +45,7 @@ function padded(value:number){ return String(value).padStart(4,"0"); }
 
 export function SpeciesCard(props: SpeciesCardProps) {
   const { imageUrl, commonName, scientificName, family, region, biome, conservationStatus, conservationCode, taxonomy,
-    rarity, variants=[], edition="ZOATLAS · Première édition", serialNumber, serialTotal, imagePosition, focalPoint,
+    rarity, variants=[], edition="ZOATLAS · Première édition", serialNumber, serialTotal, imagePosition, imageFit="cover", focalPoint,
     isOwned=true, isNew=false, interactive=true, flippable=false, defaultFlipped=false, size="medium", expedition,
     imageCredit, onActivate, className="" } = props;
   const root = useRef<HTMLElement>(null);
@@ -63,25 +64,26 @@ export function SpeciesCard(props: SpeciesCardProps) {
   const move=(event:PointerEvent<HTMLElement>)=>{if(!interactive||event.pointerType==="touch")return;const el=root.current;if(!el)return;const rect=el.getBoundingClientRect();const x=(event.clientX-rect.left)/rect.width;const y=(event.clientY-rect.top)/rect.height;if(raf.current)cancelAnimationFrame(raf.current);raf.current=requestAnimationFrame(()=>{el.style.setProperty("--rx",`${((.5-y)*12).toFixed(2)}deg`);el.style.setProperty("--ry",`${((x-.5)*14).toFixed(2)}deg`);el.style.setProperty("--gx",`${(x*100).toFixed(1)}%`);el.style.setProperty("--gy",`${(y*100).toFixed(1)}%`);el.style.setProperty("--shadow-x",`${((.5-x)*12).toFixed(1)}px`);el.style.setProperty("--shadow-y",`${(12+y*9).toFixed(1)}px`);el.style.setProperty("--glare-opacity","1");});};
   const activate=()=>{if(flippable)setFlipped(v=>!v);else onActivate?.()};
   const key=(event:KeyboardEvent<HTMLElement>)=>{if((event.key==="Enter"||event.key===" ")&&(flippable||onActivate)){event.preventDefault();activate()}};
-  const style={"--image-position":focal} as CSSProperties;
+  const style={"--image-position":focal,containerType:"inline-size"} as CSSProperties;
 
-  return <article ref={root} className={classes} style={style} onPointerMove={move} onPointerLeave={resetTilt} onPointerCancel={resetTilt}
+  return <article ref={root} className={classes} style={style} data-size={size} data-rarity={rarity} data-variants={variants.join(" ")} data-interactive={interactive?"true":"false"} onPointerMove={move} onPointerLeave={resetTilt} onPointerCancel={resetTilt}
     onClick={activate} onKeyDown={key} role={flippable||onActivate?"button":undefined} tabIndex={flippable||onActivate?0:undefined}
     aria-label={`${commonName}, carte ${rarityLabel[rarity]}${flippable?", retourner la carte":""}`} aria-pressed={flippable?flipped:undefined}>
     <div className={styles.tilt}>
       <div className={styles.flipper}>
-        <section className={`${styles.face} ${styles.front}`} aria-hidden={flipped}>
+        <section className={`${styles.face} ${styles.front} card-face`} aria-hidden={flipped}>
           {!loaded&&!failed&&<div className={styles.skeleton} style={{zIndex:0}} aria-label="Chargement de la photo"/>}
-          {!failed?<Image className={`${styles.photo} ${loaded?styles.loaded:""}`} style={{opacity:1,zIndex:1}} src={imageUrl} alt={commonName} fill sizes={size==="small"?"(max-width: 560px) 45vw, 240px":size==="large"?"390px":"(max-width: 560px) 45vw, 320px"} unoptimized onLoad={()=>setLoaded(true)} onError={()=>setFailed(true)}/>:<div className={styles.fallback} style={{zIndex:1}}><span>ZA</span><b>PHOTO INDISPONIBLE</b></div>}
-          <div className={styles.photoShade} style={{zIndex:2}}/><div className={styles.material}/><div className={styles.glare}/><div className={styles.edge}/>
+          {!failed&&imageFit==="contain"&&<Image className={styles.photo} style={{opacity:.55,zIndex:0,objectFit:"cover",filter:"blur(18px) brightness(.65) saturate(.8)",transform:"scale(1.16)"}} src={imageUrl} alt="" fill sizes="390px" unoptimized aria-hidden/>}
+          {!failed?<Image className={`${styles.photo} ${loaded?styles.loaded:""} card-photo`} style={{opacity:1,zIndex:1,objectFit:imageFit,transform:imageFit==="contain"?"scale(.94)":"scale(1.012)"}} src={imageUrl} alt={commonName} fill sizes={size==="small"?"(max-width: 560px) 45vw, 240px":size==="large"?"390px":"(max-width: 560px) 45vw, 320px"} unoptimized onLoad={()=>setLoaded(true)} onError={()=>setFailed(true)}/>:<div className={styles.fallback} style={{zIndex:1}}><span>ZA</span><b>PHOTO INDISPONIBLE</b></div>}
+          <div className={styles.photoShade} style={{zIndex:2}}/><div className={`${styles.material} card-material`}/><div className={`${styles.glare} card-glare`}/><div className={`${styles.edge} card-edge`}/>
           <header className={styles.topline}><span className={styles.rarity}><i/> {rarityLabel[rarity]}</span>{serialized&&serialNumber!=null&&serialTotal!=null&&<span className={`${styles.serial} ${oneOfOne?styles.oneOfOne:""}`}>#{padded(serialNumber)} / {padded(serialTotal)}</span>}</header>
           {isNew&&<span className={styles.newBadge}>NOUVELLE</span>}
           {expedition&&<span className={styles.expedition}>{expedition}</span>}
           {!isOwned&&<div className={styles.locked}><span>◈</span><b>NON DÉCOUVERTE</b></div>}
-          <div className={styles.panel}>
-            <div className={styles.titleRow}><div><h3>{isOwned?commonName:"Espèce inconnue"}</h3><em>{isOwned?scientificName:"À découvrir"}</em></div>{variants.filter(v=>variantLabel[v]).slice(0,1).map(v=><span key={v} className={styles.editionBadge}>{variantLabel[v]}</span>)}</div>
-            {size!=="small"&&chips.length>0&&<div className={styles.chips}>{chips.map(c=><span key={c}>{c}</span>)}</div>}
-            <footer><span className={styles.conservation}>{conservationCode&&<b>{conservationCode}</b>}{conservationStatus||"Statut non renseigné"}</span><span className={styles.brand}>{edition}</span></footer>
+          <div className={`${styles.panel} card-panel`}>
+            <div className={`${styles.titleRow} card-title`}><div><h3>{isOwned?commonName:"Espèce inconnue"}</h3><em>{isOwned?scientificName:"À découvrir"}</em></div>{variants.filter(v=>variantLabel[v]).slice(0,1).map(v=><span key={v} className={styles.editionBadge}>{variantLabel[v]}</span>)}</div>
+            {size!=="small"&&chips.length>0&&<div className={`${styles.chips} card-chips`}>{chips.map(c=><span key={c}>{c}</span>)}</div>}
+            <footer className="card-footer"><span className={styles.conservation}>{conservationCode&&<b>{conservationCode}</b>}{conservationStatus||"Statut non renseigné"}</span><span className={styles.brand}>{edition}</span></footer>
           </div>
         </section>
         <section className={`${styles.face} ${styles.back}`} aria-hidden={!flipped}>
