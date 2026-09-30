@@ -79,6 +79,7 @@ export function SpeciesCard(props: SpeciesCardProps) {
           {!failed?<Image className={`${styles.photo} ${loaded?styles.loaded:""} card-photo`} style={{opacity:1,zIndex:1,objectFit:imageFit,transform:imageFit==="contain"?"scale(.94)":"scale(1.012)"}} src={imageUrl} alt={commonName} fill sizes={size==="small"?"(max-width: 560px) 45vw, 210px":size==="large"?"320px":"(max-width: 560px) 45vw, 250px"} unoptimized onLoad={()=>setLoaded(true)} onError={()=>setFailed(true)}/>:<div className={`${styles.fallback} card-fallback`} style={{zIndex:1}}><span>ZA</span><b>PHOTO INDISPONIBLE</b></div>}
           <div className={`${styles.photoShade} card-photo-shade`} style={{zIndex:2}}/><div className={`${styles.material} card-material`}/><div className={`${styles.glare} card-glare`}/><div className={`${styles.edge} card-edge`}/>
           <div className="arcane-nameplate"><h3>{isOwned?commonName:"Espèce inconnue"}</h3><span aria-label={rarityLabel[rarity]} title={rarityLabel[rarity]}>◆</span></div>
+          <span className="rarity-banner"><i/> {rarityLabel[rarity]}</span>
           <header className={`${styles.topline} card-topline`}>{serialized&&serialNumber!=null&&serialTotal!=null&&<span className={`${styles.serial} ${oneOfOne?styles.oneOfOne:""}`}>#{padded(serialNumber)} / {padded(serialTotal)}</span>}</header>
           {isNew&&<span className={styles.newBadge}>NOUVELLE</span>}
           {expedition&&<span className={styles.expedition}>{expedition}</span>}

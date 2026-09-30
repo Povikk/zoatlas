@@ -1,4 +1,14 @@
-.concept-card{width:290px!important;max-width:290px!important}.concept-card-preview{width:min(420px,78vw)!important;max-width:420px!important}
+.concept-card{width:310px!important;max-width:310px!important}.concept-card-preview{width:min(460px,82vw)!important;max-width:460px!important}
+.species-card .rarity-banner{position:absolute;z-index:12;top:15.5%;right:3.8%;display:flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid #ffffff80;border-radius:3px;background:#20231fee;color:#fff;font:900 clamp(8px,2.9cqw,12px)/1 Arial,sans-serif;letter-spacing:.09em;text-shadow:0 1px 2px #000;box-shadow:0 3px 10px #0008,0 0 14px color-mix(in srgb,var(--accent) 55%,transparent);backdrop-filter:blur(7px)}
+.species-card .rarity-banner i{width:7px;height:7px;transform:rotate(45deg);background:var(--accent);box-shadow:0 0 7px var(--accent)}
+.species-card[data-rarity="common"] .rarity-banner{background:#3f4641f2}.species-card[data-rarity="uncommon"] .rarity-banner{background:#285d3cf2}.species-card[data-rarity="rare"] .rarity-banner{background:#175573f2}.species-card[data-rarity="epic"] .rarity-banner{background:#653287f2}.species-card[data-rarity="mythic"] .rarity-banner{background:linear-gradient(100deg,#6d4714f5,#ba7d20f5);border-color:#ffe4a8}
+.concept-card .arcane-nameplate h3,.concept-card-preview .arcane-nameplate h3{font-size:clamp(18px,6.3cqw,27px)}
+.concept-card .arcane-type-line,.concept-card-preview .arcane-type-line{font-size:clamp(10px,3.2cqw,14px)}
+.concept-card .arcane-type-line b,.concept-card-preview .arcane-type-line b{font-size:clamp(8px,2.35cqw,10px)}
+.concept-card .card-title em,.concept-card-preview .card-title em{font-size:clamp(11px,3.7cqw,15px);font-weight:600}
+.concept-card .card-chips span,.concept-card-preview .card-chips span{font-size:clamp(8px,2.55cqw,11px);font-weight:700}
+.concept-card .arcane-field-note,.concept-card-preview .arcane-field-note{font-size:clamp(8px,2.6cqw,11px);color:#34352d}
+.concept-card .card-footer,.concept-card-preview .card-footer{font-size:clamp(8px,2.4cqw,10px);font-weight:700}
 
 /* 01 Héritage */
 .species-card[data-design="heritage"] .card-face{border-radius:4.8%/3.5%}
@@ -50,4 +60,7 @@
 .species-card[data-design="totem"] .card-face{border:0;border-radius:32% 7% 30% 8%/14% 24% 12% 22%;background:radial-gradient(circle at 10% 20%,var(--accent),transparent 24%),linear-gradient(145deg,#102219,#07120d);box-shadow:inset 0 0 0 4px #07100c,inset 0 0 0 7px var(--accent),0 20px 35px #0008}.species-card[data-design="totem"] .card-photo{inset:12% 8% auto 15%!important;width:78%!important;height:51%!important;border:3px solid var(--accent);outline:0;border-radius:48% 16% 45% 18%/28% 42% 20% 36%;filter:saturate(1.08)}
 .species-card[data-design="totem"] .card-photo-shade{inset:12% 8% auto 15%;width:78%;height:51%;border-radius:48% 16% 45% 18%/28% 42% 20% 36%}.species-card[data-design="totem"] .arcane-nameplate{top:5%;left:13%;right:8%;border:0;outline:0;background:none}.species-card[data-design="totem"] .arcane-nameplate h3{font-size:clamp(16px,6.5cqw,23px)}.species-card[data-design="totem"] .arcane-type-line{top:65%;left:13%;right:8%;border:0;outline:0;border-radius:70% 20% 60% 20%;background:var(--accent);color:#07100c}.species-card[data-design="totem"] .card-panel{left:13%;right:8%;bottom:5%;height:23%;border:0;outline:0;border-radius:34% 8% 28% 8%/18% 20% 14% 22%;background:#dce2d2;color:#172018}.species-card[data-design="totem"] .card-title em,.species-card[data-design="totem"] .card-footer .conservation{color:#2f3b31}
 
-@media(max-width:760px){.concept-card{width:250px!important;max-width:250px!important}.concept-card-preview{width:min(350px,82vw)!important;max-width:350px!important}}
+.species-card:is([data-design="full-art"],[data-design="specimen"],[data-design="topographic"],[data-design="prism"]) .arcane-field-note{color:#dce8e2}
+.species-card:is([data-design="full-art"],[data-design="specimen"],[data-design="topographic"],[data-design="prism"]) .card-footer .brand{color:#d7e3dd}
+
+@media(max-width:760px){.concept-card{width:270px!important;max-width:270px!important}.concept-card-preview{width:min(380px,86vw)!important;max-width:380px!important}.species-card .rarity-banner{padding:5px 7px}}
