@@ -1,0 +1,220 @@
+/* Une grammaire de carte fantasy de collection, propre à ZOATLAS. */
+.species-card {
+  --frame-dark: #242720;
+  --paper: #d8cfb3;
+  --paper-deep: #b9ad8c;
+}
+
+.species-card .card-face {
+  border: 3px solid #171913;
+  border-radius: 4.8% / 3.5%;
+  background:
+    linear-gradient(112deg, transparent 0 42%, rgba(255,255,255,.08) 49%, transparent 56%),
+    radial-gradient(circle at 18% 8%, color-mix(in srgb,var(--accent) 30%,transparent), transparent 34%),
+    repeating-linear-gradient(125deg,#20241d 0 3px,#171b16 4px 7px,#272a22 8px 10px);
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb,var(--accent) 72%,#201d13),
+    inset 0 0 0 6px #080a07,
+    inset 0 0 0 8px color-mix(in srgb,var(--accent) 48%,#4b4431),
+    0 16px 28px rgba(0,0,0,.48);
+}
+
+.species-card .card-photo {
+  inset: 16% 6% auto !important;
+  width: 88% !important;
+  height: 43% !important;
+  border: 2px solid #080a07;
+  outline: 1px solid color-mix(in srgb,var(--accent) 70%,#756b50);
+  outline-offset: 1px;
+  box-shadow: 0 2px 8px #000b, inset 0 0 18px #0006;
+}
+
+.species-card .card-skeleton,
+.species-card .card-fallback {
+  inset: 16% 6% auto !important;
+  width: 88% !important;
+  height: 43% !important;
+  border: 2px solid #090b08;
+}
+
+.species-card .card-photo-shade {
+  inset: 16% 6% auto;
+  width: 88%;
+  height: 43%;
+  background: linear-gradient(180deg,rgba(0,0,0,.2),transparent 24%,transparent 72%,rgba(0,0,0,.3));
+  box-shadow: inset 0 0 18px #0008;
+}
+
+.arcane-nameplate {
+  position: absolute;
+  z-index: 6;
+  left: 6%;
+  right: 6%;
+  top: 5.5%;
+  height: 8%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  padding: 0 4.5%;
+  border: 1px solid #080a07;
+  outline: 1px solid color-mix(in srgb,var(--accent) 70%,#665d45);
+  background: linear-gradient(92deg,rgba(7,10,8,.96),color-mix(in srgb,var(--accent) 18%,#171a15) 72%,#090b08);
+  box-shadow: inset 0 1px rgba(255,255,255,.12),0 2px 5px #0009;
+  transform: perspective(500px) rotateX(-1deg);
+}
+
+.arcane-nameplate h3 {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: #f4f0df;
+  font: 700 clamp(11px,5.8cqw,20px)/1.05 Georgia,serif;
+  letter-spacing: -.025em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px #000;
+}
+
+.arcane-nameplate span {
+  flex: none;
+  color: var(--accent-soft);
+  font-size: clamp(9px,4cqw,15px);
+  filter: drop-shadow(0 0 5px var(--accent));
+}
+
+.species-card .card-topline {
+  top: 13.2%;
+  right: 6.5%;
+  left: auto;
+  justify-content: flex-end;
+}
+
+.species-card .card-topline:empty { display: none; }
+.species-card .card-topline .serial { padding: 3px 5px; font-size: clamp(6px,2.6cqw,9px); }
+
+.arcane-type-line {
+  position: absolute;
+  z-index: 6;
+  left: 6%;
+  right: 6%;
+  top: 61.2%;
+  height: 7.2%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 0 4%;
+  border: 1px solid #080a07;
+  outline: 1px solid color-mix(in srgb,var(--accent) 62%,#6d6349);
+  background: linear-gradient(90deg,var(--paper),#efe8d1 55%,var(--paper-deep));
+  box-shadow: 0 2px 5px #0008;
+  color: #171912;
+  font: 700 clamp(7px,3.2cqw,11px)/1 Georgia,serif;
+}
+
+.arcane-type-line > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.arcane-type-line b {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: #3e3d32;
+  font: 800 clamp(5px,2.3cqw,8px)/1 Arial,sans-serif;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+
+.arcane-type-line i {
+  width: 5px;
+  height: 5px;
+  transform: rotate(45deg);
+  background: var(--accent);
+  box-shadow: 0 0 5px var(--accent);
+}
+
+.species-card .card-panel {
+  left: 6%;
+  right: 6%;
+  bottom: 6.2%;
+  height: 23.2%;
+  min-height: 0;
+  padding: 4.5% 4.5% 3.5%;
+  justify-content: flex-start;
+  overflow: hidden;
+  border: 1px solid #080a07;
+  outline: 1px solid color-mix(in srgb,var(--accent) 58%,#6c6249);
+  background:
+    linear-gradient(rgba(255,255,255,.12),rgba(0,0,0,.05)),
+    repeating-linear-gradient(103deg,#d8cfb5 0 3px,#cec3a5 4px 6px,#e2dac1 7px 9px);
+  backdrop-filter: none;
+  color: #1b1c17;
+  box-shadow: inset 0 0 14px rgba(59,48,25,.22),0 2px 5px #0008;
+}
+
+.species-card .card-title em {
+  color: #25271f;
+  font: italic clamp(8px,3.8cqw,12px)/1.1 Georgia,serif;
+}
+
+.species-card .card-title > div { min-width: 0; }
+.species-card .card-title .editionBadge { color: #2d2b21; border-color: #766f5c; }
+
+.species-card .card-chips {
+  flex-wrap: nowrap;
+  margin-top: 4%;
+}
+
+.species-card .card-chips span {
+  max-width: 38%;
+  padding: 2px 4px;
+  border-color: #716a574f;
+  background: rgba(64,57,39,.09);
+  color: #35362d;
+  font: 600 clamp(6px,2.5cqw,8px)/1.2 Arial,sans-serif;
+}
+
+.arcane-field-note {
+  margin: 4% 0 0;
+  overflow: hidden;
+  color: #565345;
+  font: italic clamp(6px,2.7cqw,9px)/1.2 Georgia,serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.species-card .card-footer {
+  margin-top: auto;
+  padding-top: 2.5%;
+  border-top-color: rgba(55,48,33,.22);
+  color: #23251e;
+}
+
+.species-card .card-footer .brand {
+  max-width: 47%;
+  overflow: hidden;
+  color: #4b4a3e;
+  font-size: clamp(5px,2.1cqw,7px);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.species-card .card-footer .conservation { color: #25271f; }
+.species-card .card-footer .conservation b { height: 15px; min-width: 18px; background: #403d2f; color: #eee7d1; }
+.species-card .card-edge { box-shadow: inset 0 0 0 2px rgba(255,255,255,.09),inset 0 0 42px rgba(0,0,0,.28); }
+.species-card .card-material { z-index: 7; }
+.species-card .card-glare { z-index: 8; }
+
+.species-card[data-size="small"] .arcane-field-note,
+.species-card[data-size="small"] .card-chips { display: none; }
+.species-card[data-size="small"] .card-panel { height: 21.5%; padding-top: 4%; }
+.species-card[data-size="small"] .arcane-type-line { top: 61.5%; }
+
+@media (max-width: 560px) {
+  .arcane-type-line b { font-size: 5px; }
+  .species-card .card-panel { padding-inline: 4%; }
+}

@@ -72,17 +72,20 @@ export function SpeciesCard(props: SpeciesCardProps) {
     <div className={styles.tilt}>
       <div className={styles.flipper}>
         <section className={`${styles.face} ${styles.front} card-face`} aria-hidden={flipped}>
-          {!loaded&&!failed&&<div className={styles.skeleton} style={{zIndex:0}} aria-label="Chargement de la photo"/>}
+          {!loaded&&!failed&&<div className={`${styles.skeleton} card-skeleton`} style={{zIndex:0}} aria-label="Chargement de la photo"/>}
           {!failed&&imageFit==="contain"&&<Image className={styles.photo} style={{opacity:.55,zIndex:0,objectFit:"cover",filter:"blur(18px) brightness(.65) saturate(.8)",transform:"scale(1.16)"}} src={imageUrl} alt="" fill sizes="390px" unoptimized aria-hidden/>}
-          {!failed?<Image className={`${styles.photo} ${loaded?styles.loaded:""} card-photo`} style={{opacity:1,zIndex:1,objectFit:imageFit,transform:imageFit==="contain"?"scale(.94)":"scale(1.012)"}} src={imageUrl} alt={commonName} fill sizes={size==="small"?"(max-width: 560px) 45vw, 240px":size==="large"?"390px":"(max-width: 560px) 45vw, 320px"} unoptimized onLoad={()=>setLoaded(true)} onError={()=>setFailed(true)}/>:<div className={styles.fallback} style={{zIndex:1}}><span>ZA</span><b>PHOTO INDISPONIBLE</b></div>}
-          <div className={styles.photoShade} style={{zIndex:2}}/><div className={`${styles.material} card-material`}/><div className={`${styles.glare} card-glare`}/><div className={`${styles.edge} card-edge`}/>
-          <header className={styles.topline}><span className={styles.rarity}><i/> {rarityLabel[rarity]}</span>{serialized&&serialNumber!=null&&serialTotal!=null&&<span className={`${styles.serial} ${oneOfOne?styles.oneOfOne:""}`}>#{padded(serialNumber)} / {padded(serialTotal)}</span>}</header>
+          {!failed?<Image className={`${styles.photo} ${loaded?styles.loaded:""} card-photo`} style={{opacity:1,zIndex:1,objectFit:imageFit,transform:imageFit==="contain"?"scale(.94)":"scale(1.012)"}} src={imageUrl} alt={commonName} fill sizes={size==="small"?"(max-width: 560px) 45vw, 210px":size==="large"?"320px":"(max-width: 560px) 45vw, 250px"} unoptimized onLoad={()=>setLoaded(true)} onError={()=>setFailed(true)}/>:<div className={`${styles.fallback} card-fallback`} style={{zIndex:1}}><span>ZA</span><b>PHOTO INDISPONIBLE</b></div>}
+          <div className={`${styles.photoShade} card-photo-shade`} style={{zIndex:2}}/><div className={`${styles.material} card-material`}/><div className={`${styles.glare} card-glare`}/><div className={`${styles.edge} card-edge`}/>
+          <div className="arcane-nameplate"><h3>{isOwned?commonName:"Espèce inconnue"}</h3><span aria-label={rarityLabel[rarity]} title={rarityLabel[rarity]}>◆</span></div>
+          <header className={`${styles.topline} card-topline`}>{serialized&&serialNumber!=null&&serialTotal!=null&&<span className={`${styles.serial} ${oneOfOne?styles.oneOfOne:""}`}>#{padded(serialNumber)} / {padded(serialTotal)}</span>}</header>
           {isNew&&<span className={styles.newBadge}>NOUVELLE</span>}
           {expedition&&<span className={styles.expedition}>{expedition}</span>}
           {!isOwned&&<div className={styles.locked}><span>◈</span><b>NON DÉCOUVERTE</b></div>}
+          <div className="arcane-type-line"><span>Créature — {family||"Faune sauvage"}</span><b><i/> {rarityLabel[rarity]}</b></div>
           <div className={`${styles.panel} card-panel`}>
-            <div className={`${styles.titleRow} card-title`}><div><h3>{isOwned?commonName:"Espèce inconnue"}</h3><em>{isOwned?scientificName:"À découvrir"}</em></div>{variants.filter(v=>variantLabel[v]).slice(0,1).map(v=><span key={v} className={styles.editionBadge}>{variantLabel[v]}</span>)}</div>
-            {size!=="small"&&chips.length>0&&<div className={`${styles.chips} card-chips`}>{chips.map(c=><span key={c}>{c}</span>)}</div>}
+            <div className={`${styles.titleRow} card-title`}><div><em>{isOwned?scientificName:"À découvrir"}</em></div>{variants.filter(v=>variantLabel[v]).slice(0,1).map(v=><span key={v} className={styles.editionBadge}>{variantLabel[v]}</span>)}</div>
+            {chips.length>0&&<div className={`${styles.chips} card-chips`}>{chips.map(c=><span key={c}>{c}</span>)}</div>}
+            <p className="arcane-field-note">{[region,biome].filter(Boolean).join(" · ")||"Données de terrain à compléter."}</p>
             <footer className="card-footer"><span className={styles.conservation}>{conservationCode&&<b>{conservationCode}</b>}{conservationStatus||"Statut non renseigné"}</span><span className={styles.brand}>{edition}</span></footer>
           </div>
         </section>
