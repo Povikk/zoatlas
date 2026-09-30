@@ -41,7 +41,7 @@ export type SpeciesCardProps = {
 };
 
 const rarityLabel: Record<CardRarity, string> = { common:"COMMUNE", uncommon:"PEU COMMUNE", rare:"RARE", epic:"ÉPIQUE", mythic:"MYTHIQUE" };
-const variantLabel: Partial<Record<CardVariant, string>> = { "first-edition":"FIRST EDITION", "founder-edition":"FOUNDER", "event-edition":"EVENT" };
+const variantLabel: Partial<Record<CardVariant, string>> = { "first-edition":"PREMIÈRE ÉDITION", "founder-edition":"FONDATEUR", "event-edition":"ÉVÉNEMENT" };
 
 function padded(value:number){ return String(value).padStart(4,"0"); }
 
@@ -49,11 +49,12 @@ export function SpeciesCard(props: SpeciesCardProps) {
   const { imageUrl, commonName, scientificName, family, region, biome, conservationStatus, conservationCode, taxonomy,
     rarity, variants=[], edition="ZOATLAS · Première édition", serialNumber, serialTotal, imagePosition, imageFit="cover", focalPoint,
     isOwned=true, isNew=false, interactive=true, flippable=false, defaultFlipped=false, size="medium", expedition,
-    imageCredit, onActivate, className="", designStyle="heritage" } = props;
+    imageCredit, onActivate, className="", designStyle="atlas-pop" } = props;
   const root = useRef<HTMLElement>(null);
   const raf = useRef<number | null>(null);
   const [loaded,setLoaded]=useState(false);
   const [failed,setFailed]=useState(false);
+  const [imageAttempt,setImageAttempt]=useState(0);
   const [flipped,setFlipped]=useState(defaultFlipped);
   const chips=[family,region,biome].filter((v):v is string=>Boolean(v)).slice(0,3);
   const serialized=variants.includes("serialized") || (serialNumber != null && serialTotal != null);
@@ -67,6 +68,10 @@ export function SpeciesCard(props: SpeciesCardProps) {
   const activate=()=>{if(flippable)setFlipped(v=>!v);else onActivate?.()};
   const key=(event:KeyboardEvent<HTMLElement>)=>{if((event.key==="Enter"||event.key===" ")&&(flippable||onActivate)){event.preventDefault();activate()}};
   const style={"--image-position":focal,containerType:"inline-size"} as CSSProperties;
+  const retryImageUrl=(()=>{if(imageAttempt===0)return imageUrl;try{const url=new URL(imageUrl);url.searchParams.set("zoatlas_retry","1");return url.toString()}catch{return imageUrl}})();
+
+  useEffect(()=>{setLoaded(false);setFailed(false);setImageAttempt(0)},[imageUrl]);
+  const imageFailed=()=>{setLoaded(false);if(imageAttempt===0)setImageAttempt(1);else setFailed(true)};
 
   return <article ref={root} className={classes} style={style} data-size={size} data-rarity={rarity} data-design={designStyle} data-variants={variants.join(" ")} data-interactive={interactive?"true":"false"} onPointerMove={move} onPointerLeave={resetTilt} onPointerCancel={resetTilt}
     onClick={activate} onKeyDown={key} role={flippable||onActivate?"button":undefined} tabIndex={flippable||onActivate?0:undefined}
@@ -75,8 +80,8 @@ export function SpeciesCard(props: SpeciesCardProps) {
       <div className={styles.flipper}>
         <section className={`${styles.face} ${styles.front} card-face`} aria-hidden={flipped}>
           {!loaded&&!failed&&<div className={`${styles.skeleton} card-skeleton`} style={{zIndex:0}} aria-label="Chargement de la photo"/>}
-          {!failed&&imageFit==="contain"&&<Image className={styles.photo} style={{opacity:.55,zIndex:0,objectFit:"cover",filter:"blur(18px) brightness(.65) saturate(.8)",transform:"scale(1.16)"}} src={imageUrl} alt="" fill sizes="390px" unoptimized aria-hidden/>}
-          {!failed?<Image className={`${styles.photo} ${loaded?styles.loaded:""} card-photo`} style={{opacity:1,zIndex:1,objectFit:imageFit,transform:imageFit==="contain"?"scale(.94)":"scale(1.012)"}} src={imageUrl} alt={commonName} fill sizes={size==="small"?"(max-width: 560px) 45vw, 210px":size==="large"?"320px":"(max-width: 560px) 45vw, 250px"} unoptimized onLoad={()=>setLoaded(true)} onError={()=>setFailed(true)}/>:<div className={`${styles.fallback} card-fallback`} style={{zIndex:1}}><span>ZA</span><b>PHOTO INDISPONIBLE</b></div>}
+          {!failed&&imageFit==="contain"&&<Image key={`backdrop-${retryImageUrl}`} className={styles.photo} style={{opacity:.55,zIndex:0,objectFit:"cover",filter:"blur(18px) brightness(.65) saturate(.8)",transform:"scale(1.16)"}} src={retryImageUrl} alt="" fill sizes="390px" unoptimized aria-hidden/>}
+          {!failed?<Image key={retryImageUrl} className={`${styles.photo} ${loaded?styles.loaded:""} card-photo`} style={{opacity:1,zIndex:1,objectFit:imageFit,transform:imageFit==="contain"?"scale(.94)":"scale(1.012)"}} src={retryImageUrl} alt={commonName} fill sizes={size==="small"?"(max-width: 560px) 45vw, 210px":size==="large"?"390px":"(max-width: 560px) 45vw, 320px"} unoptimized onLoad={()=>setLoaded(true)} onError={imageFailed}/>:<div className={`${styles.fallback} card-fallback`} style={{zIndex:1}} role="status"><span>ZA</span><b>PHOTO INDISPONIBLE</b></div>}
           <div className={`${styles.photoShade} card-photo-shade`} style={{zIndex:2}}/><div className={`${styles.material} card-material`}/><div className={`${styles.glare} card-glare`}/><div className={`${styles.edge} card-edge`}/>
           <div className="arcane-nameplate"><h3>{isOwned?commonName:"Espèce inconnue"}</h3><span aria-label={rarityLabel[rarity]} title={rarityLabel[rarity]}>◆</span></div>
           <span className="rarity-banner"><i/> {rarityLabel[rarity]}</span>
