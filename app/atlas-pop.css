@@ -208,3 +208,81 @@
 @media (prefers-reduced-motion: reduce) {
   .species-card[data-design="atlas-pop"] .card-material { animation:none !important; }
 }
+
+/* Interaction et lisibilité : la carte entière s'incline, sans halo envahissant. */
+.species-card[data-design="atlas-pop"] {
+  contain:layout style !important;
+  overflow:visible !important;
+}
+.species-card[data-design="atlas-pop"] .card-glare {
+  opacity:calc(var(--glare-opacity) * .07) !important;
+}
+.species-card[data-design="atlas-pop"]:hover .card-material {
+  opacity:.24 !important;
+}
+.species-card[data-design="atlas-pop"] .arcane-type-line {
+  top:68.5%;
+  padding:0;
+  border:0;
+}
+.species-card[data-design="atlas-pop"] .card-type-copy {
+  display:flex;
+  align-items:center;
+  gap:clamp(6px,2cqw,9px);
+  overflow:visible;
+  white-space:nowrap;
+}
+.species-card[data-design="atlas-pop"] .card-type-copy > i {
+  width:7px;
+  height:7px;
+  flex:0 0 7px;
+  border:1px solid color-mix(in srgb,var(--pop-ink) 55%,transparent);
+  background:color-mix(in srgb,var(--pop-deep) 75%,transparent);
+  transform:rotate(45deg);
+}
+.species-card[data-design="atlas-pop"] .card-panel {
+  bottom:4%;
+  height:23%;
+  padding-top:4.5%;
+  border-top:1px solid color-mix(in srgb,var(--pop-ink) 20%,transparent);
+}
+
+/* Les mini-cartes de récapitulatif gardent uniquement les informations lisibles. */
+.species-card[data-design="atlas-pop"][data-size="small"] .rarity-banner {
+  padding:5px 7px;
+  font-size:clamp(8px,5.4cqw,10px);
+}
+.species-card[data-design="atlas-pop"][data-size="small"] .arcane-nameplate {
+  top:59%;
+}
+.species-card[data-design="atlas-pop"][data-size="small"] .arcane-nameplate h3 {
+  padding:0;
+  font-size:clamp(12px,9cqw,17px);
+  line-height:1;
+}
+.species-card[data-design="atlas-pop"][data-size="small"] .arcane-type-line {
+  display:none;
+}
+.species-card[data-design="atlas-pop"][data-size="small"] .card-panel {
+  bottom:3.5%;
+  height:18%;
+  padding:4% 0 0;
+}
+.species-card[data-design="atlas-pop"][data-size="small"] .card-title em {
+  font-size:clamp(9px,6cqw,11px);
+  line-height:1.15;
+}
+@container (max-width:280px) {
+  .species-card[data-design="atlas-pop"] .card-title {
+    display:grid;
+    grid-template-columns:1fr;
+    gap:5px;
+  }
+  .species-card[data-design="atlas-pop"] .card-title em {
+    max-width:100%;
+  }
+  .species-card[data-design="atlas-pop"] .card-title [class*="_editionBadge_"] {
+    justify-self:start;
+    max-width:100%;
+  }
+}

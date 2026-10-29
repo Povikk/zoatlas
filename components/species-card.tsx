@@ -89,7 +89,7 @@ export function SpeciesCard(props: SpeciesCardProps) {
           {isNew&&<span className={styles.newBadge}>NOUVELLE</span>}
           {expedition&&<span className={styles.expedition}>{expedition}</span>}
           {!isOwned&&<div className={styles.locked}><span>◈</span><b>NON DÉCOUVERTE</b></div>}
-          <div className="arcane-type-line"><span>Créature — {family||"Faune sauvage"}</span><b><i/> {rarityLabel[rarity]}</b></div>
+          <div className="arcane-type-line"><span className="card-type-copy"><span>Créature</span><i aria-hidden="true"/><span>{family||"Faune sauvage"}</span></span><b><i/> {rarityLabel[rarity]}</b></div>
           <div className={`${styles.panel} card-panel`}>
             <div className={`${styles.titleRow} card-title`}><div><em>{isOwned?scientificName:"À découvrir"}</em></div>{variants.filter(v=>variantLabel[v]).slice(0,1).map(v=><span key={v} className={styles.editionBadge}>{variantLabel[v]}</span>)}</div>
             {chips.length>0&&<div className={`${styles.chips} card-chips`}>{chips.map(c=><span key={c}>{c}</span>)}</div>}
